@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>JS + CSS + vue Clock</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.9/vue.min.js"></script>
+	<style>
+		html {
+			background: #018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
+			background-size: cover;
+			font-family: 'helvetica neue';
+			text-align: center;
+			font-size: 10px;
+		}
+
+		body {
+			margin: 0;
+			font-size: 2rem;
+			display: flex;
+			flex: 1;
+			min-height: 100vh;
+			align-items: center;
+		}
+
+		.clock {
+			width: 30rem;
+			height: 30rem;
+			border: 20px solid white;
+			border-radius: 50%;
+			margin: 50px auto;
+			position: relative;
+			padding: 2rem;
+			box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1),
+			inset 0 0 0 3px #EFEFEF,
+			inset 0 0 10px black,
+			0 0 10px rgba(0, 0, 0, 0.2);
+			background: url('http://www.buzzle.com/templates/clock-faces/thumbnails/blank-clock-faces-template1.jpg');
+			background-size: 100% 100%;
+		}
+
+		.clock-face {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			transform: translateY(-3px);
+			/* account for the height of the clock hands */
+		}
+
+		.hand {
+			width: 50%;
+			height: 6px;
+			background: black;
+			position: absolute;
+			top: 50%;
+			transform-origin: 100%;
+			transform: rotate(90deg);
+			transition: all 0.05s;
+			transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+		}
+
+		.second-hand {
+			width: 50%;
+		}
+
+		.min-hand {
+			width: 40%;
+			margin-left: 10%;
+		}
+
+		.hour-hand {
+			width: 25%;
+			margin-left: 25%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app" class="clock">
+		<div class="clock-face">
+			<div class="hand hour-hand" v-bind:style="{transform: 'rotate(' + hourDeg + ')'}"></div>
+			<div class="hand min-hand" v-bind:style="{transform: 'rotate(' + minsDeg + ')'}"></div>
+			<div class="hand second-hand" v-bind:style="{transform: 'rotate(' + secsDeg + ')'}"></div>
+		</div>
+	</div>
+
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				hourDeg: '90deg',
+				minsDeg: '90deg',
+				secsDeg: '90deg'
+			},
+			created() {
+				this.updateClock();
+			},
+			methods: {
+				updateClock() {
+					var ctx = this;
+					setInterval(function () {
+						var date = new Date(),
+							hour = date.getHours(),
+							min = date.getMinutes(),
+							sec = date.getSeconds();
+
+						ctx.hourDeg = (((hour / 12) * 360) + ((min / 60) * 30) + 90) + 'deg';
+						ctx.minsDeg = (((min / 60) * 360) + ((sec / 60) * 6) + 90) + 'deg';
+						ctx.secsDeg = (((sec / 60) * 360) + 90) + 'deg';
+					}, 1000);
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>
