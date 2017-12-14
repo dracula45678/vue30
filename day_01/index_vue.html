@@ -70,7 +70,7 @@
 					}
 				]
 			},
-			created: function () {
+			mounted: function () {
 				const keys = Array.from(document.querySelectorAll('.key'));
 				keys.forEach(key => key.addEventListener('transitionend', this.removeTransition));
 				window.addEventListener('keydown', this.playSound);
