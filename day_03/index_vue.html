@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Scoped CSS Variables and JS</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.9/vue.min.js"></script>
+</head>
+
+<body>
+	<div id="app">
+		<h2>Update CSS Variables with
+			<span class='hl'>JS</span>
+		</h2>
+
+		<div class="controls">
+			<label for="spacing">Spacing:</label>
+			<input id="spacing" v-on:change="fn_change_move1('spacing')" v-on:mousemove="fn_change_move1('spacing')" type="range" name="spacing"
+			 min="10" max="200" v-model="value1">
+
+			<label for="blur">Blur:</label>
+			<input id="blur" v-on:change="fn_change_move2('blur')" v-on:mousemove="fn_change_move2('blur')" type="range" name="blur"
+			 min="0" max="25" v-model="value2">
+
+			<label for="base">Base Color</label>
+			<input id="base" type="color" name="base" v-model="bcolor">
+		</div>
+
+		<img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+	</div>
+	<style>
+		:root {
+			--base: #ffc600;
+			--spacing: 10px;
+			--blur: 0px;
+		}
+
+		img {
+			padding: var(--spacing);
+			background: var(--base);
+			filter: blur(var(--blur));
+		}
+
+		.hl {
+			color: var(--base);
+		}
+
+		/*
+      misc styles, nothing to do with CSS variables
+    */
+
+		body {
+			text-align: center;
+			background: #193549;
+			color: white;
+			font-family: 'helvetica neue', sans-serif;
+			font-weight: 100;
+			font-size: 50px;
+		}
+
+		.controls {
+			margin-bottom: 50px;
+		}
+
+		input {
+			width: 100px;
+		}
+	</style>
+	<script>
+		const vm = new Vue({
+			el: '#app',
+			data: {
+				value1: '10',
+				value2: '0',
+				bcolor: '#ffc600'
+			},
+			watch: {
+				bcolor(){
+					return document.documentElement.style.setProperty(`--${'base'}`, this.bcolor);
+				}
+			},
+			methods: {
+				fn_change_move1(data) {
+					document.documentElement.style.setProperty(`--${data}`, this.value1 + 'px');
+				},
+				fn_change_move2(data) {
+					document.documentElement.style.setProperty(`--${data}`, this.value2 + 'px');
+				},
+			}
+		});
+	</script>
+
+</body>
+
+</html>
